@@ -1,12 +1,18 @@
+package game;
+
+import game.board.Coordinates;
+import game.board.Point;
+import game.board.Grid;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class GameCanvas extends JPanel {
+public class Canvas extends JPanel {
     private Color tempColor;
-    private final PointsGrid pointsGrid;
+    private final Store store;
 
-    public GameCanvas(PointsGrid pointsGrid) {
-        this.pointsGrid = pointsGrid;
+    public Canvas(Store store) {
+        this.store = store;
     }
 
     @Override
@@ -17,7 +23,7 @@ public class GameCanvas extends JPanel {
 
     private void doDrawing(Graphics2D graphics2D) {
         drawGrid(graphics2D);
-        drawPoints(graphics2D, pointsGrid);
+        drawPoints(graphics2D, store.grid);
     }
 
     private void drawGrid(Graphics2D graphics2D) {
@@ -39,12 +45,12 @@ public class GameCanvas extends JPanel {
 
     }
 
-    private void drawPoints(Graphics2D graphics2D, PointsGrid pointsGrid) {
-        int n = pointsGrid.getN();
+    private void drawPoints(Graphics2D graphics2D, Grid grid) {
+        int n = grid.getN();
         Point point;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                point = pointsGrid.getPoint(i, j);
+                point = grid.getPoint(new Coordinates(i,j));
                 if (point.isPut()) {
                     drawPoint(graphics2D, i, j, point.getColor());
                 }

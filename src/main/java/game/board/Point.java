@@ -1,3 +1,5 @@
+package game.board;
+
 import java.awt.*;
 
 public class Point {
@@ -12,11 +14,13 @@ public class Point {
         this.put = put;
     }
 
-    public void put(Color color) {
+    public boolean put(Color color) {
         if (!put) {
             put = true;
             this.color = color;
+            return true;
         }
+        return false;
     }
 
     public static Point getInstance() {

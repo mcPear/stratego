@@ -1,3 +1,5 @@
+package game;
+
 public class Dimension {
 
     public static int WINDOW_MARGIN = 20;

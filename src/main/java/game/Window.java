@@ -1,14 +1,16 @@
+package game;
+
 import javax.swing.*;
 
-public class GameWindow extends JFrame {
+public class Window extends JFrame {
 
-    public GameWindow(PointsGrid pointsGrid) {
+    public Window(Store store) {
 
-        initUI(pointsGrid);
+        initUI(store);
     }
 
-    private void initUI(PointsGrid pointsGrid) {
-        add(new GameCanvas(pointsGrid));
+    private void initUI(Store store) {
+        add(new Canvas(store));
         setTitle("Stratego");
         setSize(Dimension.WINDOW_SIZE, Dimension.WINDOW_SIZE);
         setLocationRelativeTo(null);
