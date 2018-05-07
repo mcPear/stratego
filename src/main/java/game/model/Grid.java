@@ -1,10 +1,11 @@
-package game.board;
+package game.model;
 
-import game.Dimension;
+import game.Dimensions;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Grid {
 
@@ -32,6 +33,15 @@ public class Grid {
         return points.get(row).get(column).put(color);
     }
 
+    public void unPutPoint(Coordinates coordinates) {
+        int row = coordinates.row;
+        int column = coordinates.column;
+
+        if (row >= n || column >= n)
+            throw new IllegalArgumentException("Row (" + row + ") or column (" + column + ") is greater or equal n (" + n + ")");
+        points.get(row).get(column).unPut();
+    }
+
     public int getN() {
         return n;
     }
@@ -41,11 +51,39 @@ public class Grid {
     }
 
     public static Grid getInstance() {
-        return new Grid(Dimension.N, Point.getInstance());
+        return new Grid(Dimensions.N, Point.getInstance());
     }
 
-    public boolean isLineFilled(List<Point> line) {
+    private boolean isLineFilled(List<Point> line) {
         return line.stream().allMatch(Point::isPut);
+    }
+
+    private boolean isLineMissingPoints(List<Point> line, int count) {
+        return line.stream().filter(Point::isPut).count() == line.size() - count;
+    }
+
+    public List<List<Point>> getAllFilledLines(Coordinates coordinates) {
+        return getAllCrossedLines(coordinates).stream().filter(line -> isLineFilled(line)).collect(Collectors.toList());
+    }
+
+    private List<List<Point>> getAllLinesMissingPoints(Coordinates coordinates, int count) {
+        return getAllCrossedLines(coordinates).stream().filter(line -> isLineMissingPoints(line, count)).collect(Collectors.toList());
+    }
+
+    public SignificantLines getSignificantLines(Coordinates coordinates) {
+        return new SignificantLines(
+                getAllFilledLines(coordinates),
+                getAllLinesMissingPoints(coordinates, 1),
+                getAllLinesMissingPoints(coordinates, 2));
+    }
+
+    private List<List<Point>> getAllCrossedLines(Coordinates coordinates) {
+        List<List<Point>> lines = new ArrayList<>();
+        lines.add(getRow(coordinates.row));
+        lines.add(getColumn(coordinates.column));
+        lines.add(getLeftChord(coordinates));
+        lines.add(getRightChord(coordinates));
+        return lines;
     }
 
     private List<Point> getRow(int row) {
@@ -84,7 +122,7 @@ public class Grid {
 
         i = new Coordinates(coordinates.row - 1, coordinates.column + 1);
 
-        while (i.row < points.size() && i.column >= 0) {
+        while (i.column < points.size() && i.row >= 0) {
             chord.add(points.get(i.row).get(i.column));
             i.row--;
             i.column++;
@@ -93,5 +131,20 @@ public class Grid {
         return chord;
     }
 
+    public boolean isFull() {
+        return points.stream().allMatch(row -> row.stream().allMatch(Point::isPut));
+    }
+
+    public List<Coordinates> getEmptyCells() {
+        List<Coordinates> emptyCells = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!points.get(i).get(j).isPut()) {
+                    emptyCells.add(new Coordinates(i, j));
+                }
+            }
+        }
+        return emptyCells;
+    }
 
 }

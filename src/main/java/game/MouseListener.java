@@ -19,8 +19,11 @@ public class MouseListener implements java.awt.event.MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        logic.handleMouseClicked(e);
-        window.repaint();
+        if (logic.handleHumanPut(e)) {
+            window.repaint();
+            logic.moveAsComputer();
+            window.repaint();
+        }
     }
 
     @Override

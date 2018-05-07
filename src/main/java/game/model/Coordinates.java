@@ -1,4 +1,4 @@
-package game.board;
+package game.model;
 
 public class Coordinates {
     int row;

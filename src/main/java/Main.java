@@ -1,5 +1,6 @@
 import game.*;
 import game.Window;
+import game.model.Store;
 
 import java.awt.*;
 

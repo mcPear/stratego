@@ -1,8 +1,8 @@
 package game;
 
-import game.board.Coordinates;
-import game.board.Point;
-import game.board.Grid;
+import game.model.Coordinates;
+import game.model.Point;
+import game.model.Store;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,34 +23,35 @@ public class Canvas extends JPanel {
 
     private void doDrawing(Graphics2D graphics2D) {
         drawGrid(graphics2D);
-        drawPoints(graphics2D, store.grid);
+        drawPoints(graphics2D);
+        drawScore(graphics2D);
     }
 
     private void drawGrid(Graphics2D graphics2D) {
 
-        for (int i = 0; i <= Dimension.N; i++) {
+        for (int i = 0; i <= Dimensions.N; i++) {
             graphics2D.drawLine(
-                    Dimension.WINDOW_MARGIN,
-                    Dimension.WINDOW_MARGIN + (i * Dimension.CELL_LENGTH),
-                    Dimension.WINDOW_MARGIN + Dimension.BORDER_LENGTH,
-                    Dimension.WINDOW_MARGIN + (i * Dimension.CELL_LENGTH));
+                    Dimensions.WINDOW_MARGIN,
+                    Dimensions.WINDOW_MARGIN + (i * Dimensions.CELL_LENGTH),
+                    Dimensions.WINDOW_MARGIN + Dimensions.BORDER_LENGTH,
+                    Dimensions.WINDOW_MARGIN + (i * Dimensions.CELL_LENGTH));
         }
-        for (int i = 0; i <= Dimension.N; i++) {
+        for (int i = 0; i <= Dimensions.N; i++) {
             graphics2D.drawLine(
-                    Dimension.WINDOW_MARGIN + (i * Dimension.CELL_LENGTH),
-                    Dimension.WINDOW_MARGIN,
-                    Dimension.WINDOW_MARGIN + (i * Dimension.CELL_LENGTH),
-                    Dimension.WINDOW_MARGIN + Dimension.BORDER_LENGTH);
+                    Dimensions.WINDOW_MARGIN + (i * Dimensions.CELL_LENGTH),
+                    Dimensions.WINDOW_MARGIN,
+                    Dimensions.WINDOW_MARGIN + (i * Dimensions.CELL_LENGTH),
+                    Dimensions.WINDOW_MARGIN + Dimensions.BORDER_LENGTH);
         }
 
     }
 
-    private void drawPoints(Graphics2D graphics2D, Grid grid) {
-        int n = grid.getN();
+    private void drawPoints(Graphics2D graphics2D) {
+        int n = store.grid.getN();
         Point point;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                point = grid.getPoint(new Coordinates(i,j));
+                point = store.grid.getPoint(new Coordinates(i, j));
                 if (point.isPut()) {
                     drawPoint(graphics2D, i, j, point.getColor());
                 }
@@ -61,9 +62,21 @@ public class Canvas extends JPanel {
     private void drawPoint(Graphics2D graphics2D, int row, int column, Color color) {
         saveCurrentColor(graphics2D);
         graphics2D.setColor(color);
-        int x = Dimension.WINDOW_MARGIN + Dimension.POINT_MARGIN + row * Dimension.CELL_LENGTH;
-        int y = Dimension.WINDOW_MARGIN + Dimension.POINT_MARGIN + column * Dimension.CELL_LENGTH;
-        graphics2D.fillOval(x, y, Dimension.POINT_RADIUS, Dimension.POINT_RADIUS);
+        int x = Dimensions.WINDOW_MARGIN + Dimensions.POINT_MARGIN + row * Dimensions.CELL_LENGTH;
+        int y = Dimensions.WINDOW_MARGIN + Dimensions.POINT_MARGIN + column * Dimensions.CELL_LENGTH;
+        graphics2D.fillOval(x, y, Dimensions.POINT_RADIUS, Dimensions.POINT_RADIUS);
+        restoreCurrentColor(graphics2D);
+    }
+
+    private void drawScore(Graphics2D graphics2D) {
+        saveCurrentColor(graphics2D);
+        graphics2D.setFont(new Font("Verdana", Font.BOLD, Dimensions.FONT_SIZE));
+        graphics2D.setColor(store.player1.getColor());
+        graphics2D.drawString("" + store.player1.getScore(), Dimensions.WINDOW_MARGIN, Dimensions.WINDOW_HEIGHT - Dimensions.WINDOW_MARGIN);
+        graphics2D.setColor(Color.BLACK);
+        graphics2D.drawString("vs", Dimensions.WINDOW_WIDTH / 4, Dimensions.WINDOW_HEIGHT - Dimensions.WINDOW_MARGIN);
+        graphics2D.setColor(store.player2.getColor());
+        graphics2D.drawString("" + store.player2.getScore(), Dimensions.WINDOW_WIDTH / 2, Dimensions.WINDOW_HEIGHT - Dimensions.WINDOW_MARGIN);
         restoreCurrentColor(graphics2D);
     }
 

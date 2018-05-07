@@ -1,4 +1,4 @@
-package game.board;
+package game.model;
 
 import java.awt.*;
 
@@ -21,6 +21,10 @@ public class Point {
             return true;
         }
         return false;
+    }
+
+    public void unPut() {
+        this.put = false;
     }
 
     public static Point getInstance() {

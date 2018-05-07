@@ -1,5 +1,7 @@
 package game;
 
+import game.model.Store;
+
 import javax.swing.*;
 
 public class Window extends JFrame {
@@ -12,7 +14,7 @@ public class Window extends JFrame {
     private void initUI(Store store) {
         add(new Canvas(store));
         setTitle("Stratego");
-        setSize(Dimension.WINDOW_SIZE, Dimension.WINDOW_SIZE);
+        setSize(Dimensions.WINDOW_WIDTH, Dimensions.WINDOW_HEIGHT);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
