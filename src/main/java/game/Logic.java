@@ -8,6 +8,7 @@ import game.model.Store;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.Random;
 
 public class Logic {
 
@@ -59,14 +60,26 @@ public class Logic {
         return sum;
     }
 
-    public void moveAsComputer() {
-//        List<Coordinates> emptyCells = store.grid.getEmptyCells();
-//        Coordinates coordinates = emptyCells.get(new Random(System.currentTimeMillis()).nextInt(emptyCells.size()));
+    public void moveAsComputerA() {
+        List<Coordinates> emptyCells = store.grid.getEmptyCells();
+        Coordinates coordinates = emptyCells.get(new Random(System.currentTimeMillis()).nextInt(emptyCells.size()));
+//        Coordinates coordinates = new MinMax(store).getNextCoordinatesAB();
+        if (putPoint(coordinates)) {
+            updateScore(coordinates);
+            store.changeTurn();
+        }
+    }
+
+    public void moveAsComputerB() {
         Coordinates coordinates = new MinMax(store).getNextCoordinates();
         if (putPoint(coordinates)) {
             updateScore(coordinates);
             store.changeTurn();
         }
+    }
+
+    public boolean isGameOver() {
+        return store.grid.isFull();
     }
 
 }
