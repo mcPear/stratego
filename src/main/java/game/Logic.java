@@ -1,6 +1,7 @@
 package game;
 
 import algorithm.MinMax;
+import algorithm.MinMaxAlphaBeta;
 import game.model.Coordinates;
 import game.model.Point;
 import game.model.Store;
@@ -71,7 +72,7 @@ public class Logic {
     }
 
     public void moveAsComputerB() {
-        Coordinates coordinates = new MinMax(store).getNextCoordinates();
+        Coordinates coordinates = new MinMaxAlphaBeta(store).getNextCoordinates();
         if (putPoint(coordinates)) {
             updateScore(coordinates);
             store.changeTurn();

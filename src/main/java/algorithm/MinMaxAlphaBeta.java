@@ -7,10 +7,9 @@ import game.model.Store;
 import javafx.util.Pair;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
+//TODO connect abstraction
 public class MinMaxAlphaBeta {
 
     private final Store store;
@@ -21,7 +20,8 @@ public class MinMaxAlphaBeta {
     private Player player;
     private Player opponent;
     private int minimum = 0;
-    private final int MAX_DEPTH = 2;
+    private final int MAX_DEPTH = 1;
+
     //-3,-2,-2,-2,-2,-3,-1,-3,-2,-2,-2,-2,-2,-2,-3,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-3,-2,-2,-2,-2,-2,-2,-3,-1,-3,-2,-2,-2,-2,-3,-1,result: -1
     public MinMaxAlphaBeta(Store store) {
         this.store = store;
@@ -34,24 +34,20 @@ public class MinMaxAlphaBeta {
         useMax = true;
         int beta = 4 * store.grid.getN() * store.grid.getN();
         int alpha = -beta;
-        java.util.List<Pair<Coordinates, Integer>> coordinatesValues = new ArrayList<>();
-        store.grid.getEmptyCells().stream().forEach(cell -> coordinatesValues.add(new Pair(cell, minMaxAB(cell, alpha, beta))));
-        Pair<Coordinates, Integer> result = coordinatesValues.stream().max(Comparator.comparingInt(Pair::getValue)).get();
-        System.out.println("");
-        coordinatesValues.forEach(pair -> System.out.print(pair.getValue() + ","));
-        System.out.println("result: " + result.getValue());
-        return result.getKey();
+        List<Coordinates> emptyCells = store.grid.getEmptyCells();
+        Coordinates alphaCoordinates = emptyCells.get(0);
 
-        //TODO launch code below
-//        for (int i = 0; i < emptyCells.size() && !isCutOff; i++) {
-//            result = minMaxAB(emptyCells.get(i), alpha, beta);
-//            alpha = Math.max(alpha, result);
-//            if (alpha >= beta) {
-//                isCutOff = true;
-//            }
-//        }
-//        result = alpha;
-//        return store.grid.getEmptyCells().stream().max(Comparator.comparingInt(cell -> minMaxAB(cell, alpha, beta))).get(); //FIXME load all to map and compare ints only
+        for (int i = 0; i < emptyCells.size(); i++) {
+            Pair<Coordinates, Integer> result = new Pair(emptyCells.get(i), minMaxAB(emptyCells.get(i), alpha, beta));
+            System.out.print(result.getValue() + ",");
+            if (result.getValue() > alpha) {
+                alpha = result.getValue();
+                alphaCoordinates = result.getKey();
+            }
+        }
+
+        System.out.println("result: " + alpha + '\n');
+        return alphaCoordinates;
     }
 
     private int evaluate(Coordinates coordinates) { //stan gry to nie są moje ostatnie przecięte linie, ale moje wszytskie przecięte linie
@@ -67,7 +63,7 @@ public class MinMaxAlphaBeta {
 //            value -= 2 * line.size();
 //        }
 //        return value;
-        System.out.println(coordinates + " | " + (player.getScore() - opponent.getScore()));
+        //System.out.println(coordinates + " | " + (player.getScore() - opponent.getScore()));
         return player.getScore() - opponent.getScore(); //one dont't change players here
     }
 

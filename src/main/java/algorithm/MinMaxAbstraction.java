@@ -10,12 +10,12 @@ import java.util.List;
 
 public abstract class MinMaxAbstraction {
 
-    private final Store store;
+    protected final Store store;
     private final Color simulationColor = Color.BLACK;
     private int depth = 0;
-    private boolean useMax = true;
-    private Player player;
-    private Player opponent;
+    protected boolean useMax = true;
+    protected Player player;
+    protected Player opponent;
     protected int minimum = 0;
     private final int MAX_DEPTH = 2;
 
@@ -23,33 +23,33 @@ public abstract class MinMaxAbstraction {
         this.store = store;
     }
 
-    private boolean isLeaf() {
+    protected boolean isLeaf() {
         return store.grid.isFull() || depth >= MAX_DEPTH;
     }
 
-    private void beginMinMax() {
+    protected void beginMinMax() {
         depth++;
         useMax = !useMax;
         store.changeTurn();
     }
 
-    private void endMinMax() {
+    protected void endMinMax() {
         store.changeTurn();
         useMax = !useMax;
         depth--;
     }
 
-    private void beginChildMinMax(Coordinates cell) {
+    protected void beginChildMinMax(Coordinates cell) {
         store.grid.putPoint(cell, simulationColor);
         updateScore(cell);
     }
 
-    private void endChildMinMax(Coordinates cell) {
+    protected void endChildMinMax(Coordinates cell) {
         reduceScore(cell);
         store.grid.unPutPoint(cell);
     }
 
-    private int evaluate() { //stan gry to nie są moje ostatnie przecięte linie, ale moje wszytskie przecięte linie
+    protected int evaluate() { //stan gry to nie są moje ostatnie przecięte linie, ale moje wszytskie przecięte linie
         //dla gracza wykonującego ruch
         //dodać punkty za linie, które domnkął
         //odjąc punkty za te które są wystawione bez 1, w czasie ??
