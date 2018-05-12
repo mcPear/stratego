@@ -1,6 +1,5 @@
 package game;
 
-import algorithm.MinMax;
 import algorithm.MinMaxAlphaBeta;
 import game.model.Coordinates;
 import game.model.Point;
