@@ -1,22 +1,25 @@
 package algorithm;
 
 import game.model.Coordinates;
+import game.model.HeuristicParameters;
 import game.model.Store;
 import javafx.util.Pair;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class MinMaxAlphaBeta extends MinMaxAbstraction {
 
     private boolean isCutOff = false;
 
-    public MinMaxAlphaBeta(Store store) {
-        super(store);
+    public MinMaxAlphaBeta(Store store, int maxDepth, Function<HeuristicParameters, Integer> evaluateFunction) {
+        super(store, maxDepth, evaluateFunction);
     }
 
     public Coordinates getNextCoordinates() {//as second player here
         player = store.getCurrentTurnPlayer();
         opponent = store.getCurrentTurnOpponent();
+        heuristicParameters = new HeuristicParameters(player, opponent, store.grid);
         useMax = true;
         int beta = 4 * store.grid.getN() * store.grid.getN();
         int alpha = -beta;

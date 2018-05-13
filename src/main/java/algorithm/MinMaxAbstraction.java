@@ -1,12 +1,11 @@
 package algorithm;
 
-import game.model.Coordinates;
-import game.model.Player;
+import game.model.*;
 import game.model.Point;
-import game.model.Store;
 
 import java.awt.*;
 import java.util.List;
+import java.util.function.Function;
 
 public abstract class MinMaxAbstraction {
 
@@ -17,14 +16,18 @@ public abstract class MinMaxAbstraction {
     protected Player player;
     protected Player opponent;
     protected int minimum = 0;
-    private final int MAX_DEPTH = 2;
+    private final int maxDepth;
+    private final Function<HeuristicParameters, Integer> evaluateFunction;
+    protected HeuristicParameters heuristicParameters;
 
-    public MinMaxAbstraction(Store store) {
+    public MinMaxAbstraction(Store store, int maxDepth, Function<HeuristicParameters, Integer> evaluateFunction) {
         this.store = store;
+        this.maxDepth = maxDepth;
+        this.evaluateFunction=evaluateFunction;
     }
 
     protected boolean isLeaf() {
-        return store.grid.isFull() || depth >= MAX_DEPTH;
+        return store.grid.isFull() || depth >= maxDepth;
     }
 
     protected void beginMinMax() {
@@ -49,21 +52,8 @@ public abstract class MinMaxAbstraction {
         store.grid.unPutPoint(cell);
     }
 
-    protected int evaluate() { //stan gry to nie są moje ostatnie przecięte linie, ale moje wszytskie przecięte linie
-        //dla gracza wykonującego ruch
-        //dodać punkty za linie, które domnkął
-        //odjąc punkty za te które są wystawione bez 1, w czasie ??
-//        SignificantLines significantLines = store.grid.getSignificantLines(coordinates);
-//        int value = 0;
-//        for (List<Point> line : significantLines.getFilled()) {
-//            value += 2 * line.size();
-//        }
-//        for (List<Point> line : significantLines.getMissingOnePoint()) {
-//            value -= 2 * line.size();
-//        }
-//        return value;
-//        System.out.println(coordinates + " | " + (player.getScore() - opponent.getScore()));
-        return player.getScore() - opponent.getScore();
+    protected int evaluate() {
+        return evaluateFunction.apply(heuristicParameters);
     }
 
     private void reduceScore(Coordinates coordinates) {

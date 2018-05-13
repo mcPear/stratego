@@ -1,4 +1,5 @@
-import game.*;
+import game.Logic;
+import game.MouseListener;
 import game.Window;
 import game.model.Store;
 
@@ -8,13 +9,18 @@ public class Main {
 
     public static void main(String[] args) {
 
-        EventQueue.invokeLater(() -> {
-            Store store = new Store(Color.RED, Color.BLUE);
-            Window window = new Window(store);
-            Logic logic = new Logic(store);
-            window.addMouseListener(new MouseListener(logic, window));
-            window.setVisible(true);
-        });
+        Store store = new Store(Color.RED, Color.BLUE);
+        Window window = new Window(store);
+        Logic logic = new Logic(store);
+        window.addMouseListener(new MouseListener(logic, window));
+        window.setVisible(true);
+
+        while (!logic.isGameOver()) {
+                logic.moveAsComputerA();
+                window.repaint();
+                logic.moveAsComputerB();
+                window.repaint();
+        }
 
     }
 

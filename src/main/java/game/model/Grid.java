@@ -62,27 +62,30 @@ public class Grid {
         return line.stream().filter(Point::isPut).count() == line.size() - count;
     }
 
-    public List<List<Point>> getAllFilledLines(Coordinates coordinates) {
-        return getAllCrossedLines(coordinates).stream().filter(line -> isLineFilled(line)).collect(Collectors.toList());
+    public List<List<Point>> getAllFilledLines() {
+        return getAllLines().stream().filter(line -> isLineFilled(line)).collect(Collectors.toList());
     }
 
-    private List<List<Point>> getAllLinesMissingPoints(Coordinates coordinates, int count) {
-        return getAllCrossedLines(coordinates).stream().filter(line -> isLineMissingPoints(line, count)).collect(Collectors.toList());
+    private List<List<Point>> getAllLinesMissingPoints(int count) {
+        return getAllLines().stream().filter(line -> isLineMissingPoints(line, count)).collect(Collectors.toList());
     }
 
-    public SignificantLines getSignificantLines(Coordinates coordinates) {
+    public SignificantLines getSignificantLines() {
         return new SignificantLines(
-                getAllFilledLines(coordinates),
-                getAllLinesMissingPoints(coordinates, 1),
-                getAllLinesMissingPoints(coordinates, 2));
+                getAllFilledLines(),
+                getAllLinesMissingPoints(1),
+                getAllLinesMissingPoints(2));
     }
 
-    private List<List<Point>> getAllCrossedLines(Coordinates coordinates) {
+    private List<List<Point>> getAllLines() {
         List<List<Point>> lines = new ArrayList<>();
-        lines.add(getRow(coordinates.row));
-        lines.add(getColumn(coordinates.column));
-        lines.add(getLeftChord(coordinates));
-        lines.add(getRightChord(coordinates));
+        for (int i = 0; i < points.size(); i++) {
+            lines.add(getRow(i));
+            lines.add(getColumn(i));
+            lines.add(getLeftChord(new Coordinates(points.size() - 1 - i, i)));
+            lines.add(getRightChord(new Coordinates(i, i)));
+        }
+        System.out.println("All lines count: " + lines.size());
         return lines;
     }
 

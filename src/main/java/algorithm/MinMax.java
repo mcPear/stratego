@@ -1,20 +1,23 @@
 package algorithm;
 
 import game.model.Coordinates;
+import game.model.HeuristicParameters;
 import game.model.Store;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 
 public class MinMax extends MinMaxAbstraction {
 
-    public MinMax(Store store) {
-        super(store);
+    public MinMax(Store store, int maxDepth, Function<HeuristicParameters, Integer> evaluateFunction) {
+        super(store, maxDepth, evaluateFunction);
     }
 
     public Coordinates getNextCoordinates() {//as second player here
+        heuristicParameters = new HeuristicParameters(player, opponent, store.grid);
         player = store.getCurrentTurnPlayer();
         opponent = store.getCurrentTurnOpponent();
         useMax = true;
