@@ -11,13 +11,14 @@ public class DoNotTankHeuristic implements Function<HeuristicParameters, Integer
 
     @Override
     public Integer apply(HeuristicParameters heuristicParameters) {
-        SignificantLines significantLines = heuristicParameters.grid.getSignificantLines();
-        int tankedLinesValue = 0;
-        for (List<Point> line : significantLines.getMissingOnePoint()) {
-            tankedLinesValue += line.size();
-        }
-        if(heuristicParameters.playerPutTheLastPoint) //TODO find out how to get it
-        return heuristicParameters.player.getScore() - heuristicParameters.opponent.getScore();
+//        SignificantLines significantLines = heuristicParameters.grid.getSignificantLines();
+//        int tankedLinesValue = 0;
+//        for (List<Point> line : significantLines.getMissingOnePoint()) {
+//            tankedLinesValue += line.size();
+//        }
+//        if(heuristicParameters.playerPutTheLastPoint) //TODO find out how to get it
+//        return heuristicParameters.player.getScore() - heuristicParameters.opponent.getScore();
+        return 0;
     }
 
     public static Function<HeuristicParameters, Integer> get() {

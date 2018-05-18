@@ -5,12 +5,10 @@ import game.model.Coordinates;
 import game.model.Point;
 import game.model.Store;
 import heuristic.MaxScoreDifferenceHeuristic;
-import heuristic.MaxScoreHeuristic;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.List;
-import java.util.Random;
 
 public class Logic {
 

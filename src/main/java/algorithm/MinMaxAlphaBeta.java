@@ -11,12 +11,14 @@ import java.util.function.Function;
 public class MinMaxAlphaBeta extends MinMaxAbstraction {
 
     private boolean isCutOff = false;
+    private long startTime;
 
     public MinMaxAlphaBeta(Store store, int maxDepth, Function<HeuristicParameters, Integer> evaluateFunction) {
         super(store, maxDepth, evaluateFunction);
     }
 
     public Coordinates getNextCoordinates() {//as second player here
+        startTime = System.currentTimeMillis();
         player = store.getCurrentTurnPlayer();
         opponent = store.getCurrentTurnOpponent();
         heuristicParameters = new HeuristicParameters(player, opponent, store.grid);
@@ -46,7 +48,7 @@ public class MinMaxAlphaBeta extends MinMaxAbstraction {
     private int minMax(int alpha, int beta) {
         beginMinMax();
         Result result = new Result();
-        if (isLeaf()) {
+        if (isLeaf() || isTimeOut()) {
             result.set(evaluate());
         } else {
             childrenMinMax(result, alpha, beta);
@@ -77,6 +79,11 @@ public class MinMaxAlphaBeta extends MinMaxAbstraction {
             endChildMinMax(cell);
         }
         isCutOff = false;
+    }
+
+    private boolean isTimeOut() {
+//        return System.currentTimeMillis() - startTime >= 5_000;
+        return false;
     }
 
 }

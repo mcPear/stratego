@@ -6,10 +6,12 @@ public class MouseListener implements java.awt.event.MouseListener {
 
     private final Logic logic;
     private final Window window;
+    private final boolean playerVsMachine;
 
-    public MouseListener(Logic logic, Window window) {
+    public MouseListener(Logic logic, Window window, boolean playerVsMachine) {
         this.logic = logic;
         this.window = window;
+        this.playerVsMachine = playerVsMachine;
     }
 
     @Override
@@ -19,18 +21,11 @@ public class MouseListener implements java.awt.event.MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-//                    window.repaint();
-//        if (logic.handleHumanPut(e)) {
-//            window.repaint();
-//            logic.moveAsComputerB();
-//            window.repaint();
-//        }
-//        while(!logic.isGameOver()){
-//            logic.moveAsComputerA();
-//            window.repaint();
-//            logic.moveAsComputerB();
-//            window.repaint();
-//        }
+        if (playerVsMachine && logic.handleHumanPut(e)) {
+            window.repaint();
+            logic.moveAsComputerB();
+            window.repaint();
+        }
     }
 
     @Override
