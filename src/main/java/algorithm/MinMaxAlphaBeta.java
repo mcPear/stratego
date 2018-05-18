@@ -82,8 +82,7 @@ public class MinMaxAlphaBeta extends MinMaxAbstraction {
     }
 
     private boolean isTimeOut() {
-//        return System.currentTimeMillis() - startTime >= 5_000;
-        return false;
+        return System.currentTimeMillis() - startTime >= 15_000;
     }
 
 }

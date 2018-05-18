@@ -20,9 +20,9 @@ public class Main {
         if (!PLAYER_VS_MACHINE) {
             while (!logic.isGameOver()) {
                 logic.moveAsComputerA();
-                window.repaint();
+                window.paintImmediately();
                 logic.moveAsComputerB();
-                window.repaint();
+                window.paintImmediately();
             }
         }
     }
