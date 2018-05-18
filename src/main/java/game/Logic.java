@@ -4,7 +4,9 @@ import algorithm.MinMaxAlphaBeta;
 import game.model.Coordinates;
 import game.model.Point;
 import game.model.Store;
+import heuristic.DoNotTankHeuristic;
 import heuristic.MaxScoreDifferenceHeuristic;
+import heuristic.MinOpponentScoreHeuristic;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -68,7 +70,7 @@ public class Logic {
 //            updateScore(coordinates);
 //            store.changeTurn();
 //        }
-        Coordinates coordinates = new MinMaxAlphaBeta(store, 4, MaxScoreDifferenceHeuristic.get()).getNextCoordinates();
+        Coordinates coordinates = new MinMaxAlphaBeta(store, 4, DoNotTankHeuristic.get()).getNextCoordinates();
         if (putPoint(coordinates)) {
             updateScore(coordinates);
             store.changeTurn();

@@ -32,7 +32,7 @@ public class MinMaxAlphaBeta extends MinMaxAbstraction {
         for (int i = 0; i < emptyCells.size(); i++) {
             Coordinates cell = emptyCells.get(i);
             beginChildMinMax(cell);
-            Pair<Coordinates, Integer> result = new Pair(cell, minMax(alpha, beta));
+            Pair<Coordinates, Integer> result = new Pair(cell, minMax(alpha, beta, cell));
             System.out.print(result.getValue() + ",");
             if (result.getValue() > alpha) {
                 alpha = result.getValue();
@@ -45,11 +45,11 @@ public class MinMaxAlphaBeta extends MinMaxAbstraction {
         return alphaCoordinates;
     }
 
-    private int minMax(int alpha, int beta) {
+    private int minMax(int alpha, int beta, Coordinates theLastPutPoint) {
         beginMinMax();
         Result result = new Result();
         if (isLeaf() || isTimeOut()) {
-            result.set(evaluate());
+            result.set(evaluate(theLastPutPoint));
         } else {
             childrenMinMax(result, alpha, beta);
         }
@@ -64,13 +64,13 @@ public class MinMaxAlphaBeta extends MinMaxAbstraction {
             Coordinates cell = emptyCells.get(i);
             beginChildMinMax(cell);
             if (useMax) {
-                alpha = Math.max(alpha, minMax(alpha, beta));
+                alpha = Math.max(alpha, minMax(alpha, beta, cell));
                 if (alpha >= beta) {
                     isCutOff = true;
                 }
                 result.set(alpha);
             } else {
-                beta = Math.min(beta, minMax(alpha, beta));
+                beta = Math.min(beta, minMax(alpha, beta, cell));
                 if (beta <= alpha) {
                     isCutOff = true;
                 }

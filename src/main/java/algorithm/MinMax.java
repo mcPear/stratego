@@ -26,7 +26,7 @@ public class MinMax extends MinMaxAbstraction {
 
         store.grid.getEmptyCells().forEach(cell -> {
             beginChildMinMax(cell);
-            coordinatesValues.add(new Pair<>(cell, minMax()));
+            coordinatesValues.add(new Pair<>(cell, minMax(cell)));
             endChildMinMax(cell);
         });
 
@@ -38,11 +38,11 @@ public class MinMax extends MinMaxAbstraction {
         return result.getKey();
     }
 
-    private int minMax() {
+    private int minMax(Coordinates theLastPutPoint) {
         beginMinMax();
         Result result = new Result();
         if (isLeaf()) {
-            result.set(evaluate());
+            result.set(evaluate(theLastPutPoint));
         } else {
             childrenMinMax(result);
         }
@@ -55,9 +55,9 @@ public class MinMax extends MinMaxAbstraction {
             beginChildMinMax(cell);
 
             if (useMax) {
-                result.setMax(minMax());
+                result.setMax(minMax(cell));
             } else {
-                result.setMin(minMax());
+                result.setMin(minMax(cell));
             }
 
             endChildMinMax(cell);

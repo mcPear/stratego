@@ -11,4 +11,6 @@ public class HeuristicParameters {
     public Player player;
     public Player opponent;
     public Grid grid;
+    public Coordinates theLastPutPoint;
+    public boolean isPlayerTurn;
 }

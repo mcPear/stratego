@@ -23,7 +23,7 @@ public abstract class MinMaxAbstraction {
     public MinMaxAbstraction(Store store, int maxDepth, Function<HeuristicParameters, Integer> evaluateFunction) {
         this.store = store;
         this.maxDepth = maxDepth;
-        this.evaluateFunction=evaluateFunction;
+        this.evaluateFunction = evaluateFunction;
     }
 
     protected boolean isLeaf() {
@@ -52,7 +52,9 @@ public abstract class MinMaxAbstraction {
         store.grid.unPutPoint(cell);
     }
 
-    protected int evaluate() {
+    protected int evaluate(Coordinates theLastPutPoint) {
+        heuristicParameters.theLastPutPoint = theLastPutPoint;
+        heuristicParameters.isPlayerTurn = store.getCurrentTurnPlayer().equals(player);
         return evaluateFunction.apply(heuristicParameters);
     }
 
