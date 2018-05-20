@@ -1,5 +1,7 @@
 package game.model;
 
+import game.Dimensions;
+
 public class Coordinates {
     int row;
     int column;
@@ -16,6 +18,14 @@ public class Coordinates {
     public Coordinates(Coordinates other) {
         row = other.row;
         column = other.column;
+    }
+
+    public double getDistanceFromTheMiddle() {
+        return Math.sqrt(Math.pow(row - Dimensions.THE_MIDDLE, 2) + Math.pow(column - Dimensions.THE_MIDDLE, 2));
+    }
+
+    public double getDistanceFrom(Coordinates cell) {
+        return Math.sqrt(Math.pow(row - cell.row, 2) + Math.pow(column - cell.column, 2));
     }
 
     @Override

@@ -4,7 +4,6 @@ import algorithm.MinMaxAlphaBeta;
 import game.model.Coordinates;
 import game.model.Point;
 import game.model.Store;
-import heuristic.DoNotTankHeuristic;
 import heuristic.MaxScoreDifferenceHeuristic;
 import heuristic.MinOpponentScoreHeuristic;
 
@@ -63,14 +62,8 @@ public class Logic {
     }
 
     public void moveAsComputerA() {
-//        List<Coordinates> emptyCells = store.grid.getEmptyCells();
-//        Coordinates coordinates = emptyCells.get(new Random(System.currentTimeMillis()).nextInt(emptyCells.size()));
-////        Coordinates coordinates = new MinMax(store).getNextCoordinatesAB();
-//        if (putPoint(coordinates)) {
-//            updateScore(coordinates);
-//            store.changeTurn();
-//        }
-        Coordinates coordinates = new MinMaxAlphaBeta(store, 4, DoNotTankHeuristic.get()).getNextCoordinates();
+        Coordinates coordinates = new MinMaxAlphaBeta(store, 5, MaxScoreDifferenceHeuristic.get(),
+                false, true).getNextCoordinates();
         if (putPoint(coordinates)) {
             updateScore(coordinates);
             store.changeTurn();
@@ -78,7 +71,8 @@ public class Logic {
     }
 
     public void moveAsComputerB() {
-        Coordinates coordinates = new MinMaxAlphaBeta(store, 4, MaxScoreDifferenceHeuristic.get()).getNextCoordinates();
+        Coordinates coordinates = new MinMaxAlphaBeta(store, 5, MaxScoreDifferenceHeuristic.get(),
+                false, true).getNextCoordinates();
         if (putPoint(coordinates)) {
             updateScore(coordinates);
             store.changeTurn();

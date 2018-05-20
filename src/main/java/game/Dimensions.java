@@ -10,6 +10,7 @@ public class Dimensions {
     public static int WINDOW_WIDTH = 2 * WINDOW_MARGIN + N * CELL_LENGTH;
     public static int WINDOW_HEIGHT = WINDOW_WIDTH + WINDOW_MARGIN + FONT_SIZE;
     public static int POINT_RADIUS = CELL_LENGTH / 5 * 4;
-    public static int POINT_MARGIN = (CELL_LENGTH - POINT_RADIUS)/2;
+    public static int POINT_MARGIN = (CELL_LENGTH - POINT_RADIUS) / 2;
+    public static int THE_MIDDLE = (N - 1) / 2;
 
 }

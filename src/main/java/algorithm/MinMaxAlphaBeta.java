@@ -5,16 +5,22 @@ import game.model.HeuristicParameters;
 import game.model.Store;
 import javafx.util.Pair;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 
 public class MinMaxAlphaBeta extends MinMaxAbstraction {
 
     private boolean isCutOff = false;
+    private boolean useCornersHeuristic;
+    private boolean useCenterOfGravityHeuristic;
     private long startTime;
 
-    public MinMaxAlphaBeta(Store store, int maxDepth, Function<HeuristicParameters, Integer> evaluateFunction) {
+    public MinMaxAlphaBeta(Store store, int maxDepth, Function<HeuristicParameters, Integer> evaluateFunction,
+                           boolean useCornersHeuristic, boolean useCenterOfGravityHeuristic) {
         super(store, maxDepth, evaluateFunction);
+        this.useCenterOfGravityHeuristic = useCenterOfGravityHeuristic;
+        this.useCornersHeuristic = useCornersHeuristic;
     }
 
     public Coordinates getNextCoordinates() {//as second player here
@@ -27,6 +33,8 @@ public class MinMaxAlphaBeta extends MinMaxAbstraction {
         int alpha = -beta;
 
         List<Coordinates> emptyCells = store.grid.getEmptyCells();
+        if (useCornersHeuristic) sortDescendingByDistanceFromMiddle(emptyCells);
+        if (useCenterOfGravityHeuristic) sortDescendingByDistanceFromPutPoints(emptyCells);
         Coordinates alphaCoordinates = emptyCells.get(0);
 
         for (int i = 0; i < emptyCells.size(); i++) {
@@ -60,6 +68,9 @@ public class MinMaxAlphaBeta extends MinMaxAbstraction {
     private void childrenMinMax(Result result, int alpha, int beta) {
         isCutOff = false;
         List<Coordinates> emptyCells = store.grid.getEmptyCells();
+        //1. bliżej narożników mają pierwszeństwo
+        if (useCornersHeuristic) sortDescendingByDistanceFromMiddle(emptyCells);
+        if (useCenterOfGravityHeuristic) sortDescendingByDistanceFromPutPoints(emptyCells);
         for (int i = 0; i < emptyCells.size() && !isCutOff; i++) {
             Coordinates cell = emptyCells.get(i);
             beginChildMinMax(cell);
@@ -83,6 +94,17 @@ public class MinMaxAlphaBeta extends MinMaxAbstraction {
 
     private boolean isTimeOut() {
         return System.currentTimeMillis() - startTime >= 15_000;
+    }
+
+    private void sortDescendingByDistanceFromMiddle(List<Coordinates> points) {
+        Comparator<Coordinates> distanceFromTheMiddleComparator = Comparator.comparingDouble(Coordinates::getDistanceFromTheMiddle);
+        points.sort(distanceFromTheMiddleComparator.reversed());
+    }
+
+    private void sortDescendingByDistanceFromPutPoints(List<Coordinates> points) {
+        Coordinates theMiddleOfPutPoints = store.grid.getTheMiddleOfPutPoints();
+        Comparator<Coordinates> distanceFromTheMiddleComparator = Comparator.comparingDouble(cell -> cell.getDistanceFrom(theMiddleOfPutPoints));
+        points.sort(distanceFromTheMiddleComparator.reversed());
     }
 
 }

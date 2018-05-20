@@ -147,4 +147,30 @@ public class Grid {
         return emptyCells;
     }
 
+    private List<Coordinates> getBusyCells() {
+        List<Coordinates> emptyCells = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!points.get(i).get(j).isPut()) {
+                    emptyCells.add(new Coordinates(i, j));
+                }
+            }
+        }
+        return emptyCells;
+    }
+
+    public Coordinates getTheMiddleOfPutPoints() {
+        int row = 0;
+        int column = 0;
+        List<Coordinates> busyCells = getBusyCells();
+        for (int i = 0; i < busyCells.size(); i++) {
+            row += busyCells.get(i).row;
+            column += busyCells.get(i).column;
+        }
+        row = row / busyCells.size();
+        column = column / busyCells.size();
+//        System.out.println("The middle: "+row+","+column);
+        return new Coordinates(row, column);
+    }
+
 }
