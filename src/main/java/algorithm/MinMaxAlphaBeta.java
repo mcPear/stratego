@@ -14,11 +14,10 @@ public class MinMaxAlphaBeta extends MinMaxAbstraction {
     private boolean isCutOff = false;
     private boolean useCornersHeuristic;
     private boolean useCenterOfGravityHeuristic;
-    private long startTime;
 
     public MinMaxAlphaBeta(Store store, int maxDepth, Function<HeuristicParameters, Integer> evaluateFunction,
-                           boolean useCornersHeuristic, boolean useCenterOfGravityHeuristic) {
-        super(store, maxDepth, evaluateFunction);
+                           boolean useCornersHeuristic, boolean useCenterOfGravityHeuristic, int moveTimeSeconds) {
+        super(store, maxDepth, evaluateFunction, moveTimeSeconds);
         this.useCenterOfGravityHeuristic = useCenterOfGravityHeuristic;
         this.useCornersHeuristic = useCornersHeuristic;
     }
@@ -68,7 +67,6 @@ public class MinMaxAlphaBeta extends MinMaxAbstraction {
     private void childrenMinMax(Result result, int alpha, int beta) {
         isCutOff = false;
         List<Coordinates> emptyCells = store.grid.getEmptyCells();
-        //1. bliżej narożników mają pierwszeństwo
         if (useCornersHeuristic) sortDescendingByDistanceFromMiddle(emptyCells);
         if (useCenterOfGravityHeuristic) sortDescendingByDistanceFromPutPoints(emptyCells);
         for (int i = 0; i < emptyCells.size() && !isCutOff; i++) {
@@ -90,10 +88,6 @@ public class MinMaxAlphaBeta extends MinMaxAbstraction {
             endChildMinMax(cell);
         }
         isCutOff = false;
-    }
-
-    private boolean isTimeOut() {
-        return System.currentTimeMillis() - startTime >= 15_000;
     }
 
     private void sortDescendingByDistanceFromMiddle(List<Coordinates> points) {

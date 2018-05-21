@@ -3,7 +3,7 @@ package game;
 public class Dimensions {
 
     public static int WINDOW_MARGIN = 20;
-    public static int N = 8;
+    public static int N = 10;
     public static int CELL_LENGTH = 65;
     public static int FONT_SIZE = 40;
     public static int BORDER_LENGTH = CELL_LENGTH * N;

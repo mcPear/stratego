@@ -12,14 +12,15 @@ import java.util.function.Function;
 
 public class MinMax extends MinMaxAbstraction {
 
-    public MinMax(Store store, int maxDepth, Function<HeuristicParameters, Integer> evaluateFunction) {
-        super(store, maxDepth, evaluateFunction);
+    public MinMax(Store store, int maxDepth, Function<HeuristicParameters, Integer> evaluateFunction, int moveTimeSeconds) {
+        super(store, maxDepth, evaluateFunction, moveTimeSeconds);
     }
 
     public Coordinates getNextCoordinates() {//as second player here
-        heuristicParameters = new HeuristicParameters(player, opponent, store.grid);
+        startTime = System.currentTimeMillis();
         player = store.getCurrentTurnPlayer();
         opponent = store.getCurrentTurnOpponent();
+        heuristicParameters = new HeuristicParameters(player, opponent, store.grid);
         useMax = true;
 
         List<Pair<Coordinates, Integer>> coordinatesValues = new ArrayList<>();
@@ -41,7 +42,7 @@ public class MinMax extends MinMaxAbstraction {
     private int minMax(Coordinates theLastPutPoint) {
         beginMinMax();
         Result result = new Result();
-        if (isLeaf()) {
+        if (isLeaf() || isTimeOut()) {
             result.set(evaluate(theLastPutPoint));
         } else {
             childrenMinMax(result);

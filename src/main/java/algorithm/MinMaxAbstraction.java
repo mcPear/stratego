@@ -19,11 +19,14 @@ public abstract class MinMaxAbstraction {
     private final int maxDepth;
     private final Function<HeuristicParameters, Integer> evaluateFunction;
     protected HeuristicParameters heuristicParameters;
+    private int moveTimeSeconds;
+    protected long startTime;
 
-    public MinMaxAbstraction(Store store, int maxDepth, Function<HeuristicParameters, Integer> evaluateFunction) {
+    public MinMaxAbstraction(Store store, int maxDepth, Function<HeuristicParameters, Integer> evaluateFunction, int moveTimeSeconds) {
         this.store = store;
         this.maxDepth = maxDepth;
         this.evaluateFunction = evaluateFunction;
+        this.moveTimeSeconds = moveTimeSeconds;
     }
 
     protected boolean isLeaf() {
@@ -95,6 +98,10 @@ public abstract class MinMaxAbstraction {
         public Integer get() {
             return value;
         }
+    }
+
+    protected boolean isTimeOut() {
+        return System.currentTimeMillis() - startTime >= moveTimeSeconds * 1_000;
     }
 
 }
